@@ -6,7 +6,7 @@ require 'rdoc/task'
 require 'rspec/core/rake_task'
 
 spec = Gem::Specification.new do |s|
-  s.name = 'first_logic_logger'
+  s.name = 'fl_application'
   s.version = '4.0.0'
   s.has_rdoc = true
   s.extra_rdoc_files = ['readme.md', 'LICENSE']
@@ -30,7 +30,7 @@ Rake::RDocTask.new do |rdoc|
   files =['readme.md', 'LICENSE', 'lib/*.rb']
   rdoc.rdoc_files.add(files)
   rdoc.main = "readme.md"                     # page to start on
-  rdoc.title = "FirstLogic Process Logger docs"
+  rdoc.title = "FL Application docs"
   rdoc.rdoc_dir = 'doc/rdoc'               # rdoc output folder
   rdoc.options << '--line-numbers'
 end
