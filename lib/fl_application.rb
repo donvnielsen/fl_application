@@ -13,12 +13,12 @@ module FL_Application
       File.join(FL_Application::ROOTDIR,'sql','db_ddl.sql')
   ).split(';').map{|sql| sql.strip.nil? ? nil : sql.strip<<';'}
 
-  def FL_Application.build_tables(o = {db_name:nil,delete_db:false})
-    # dbname must be provided
-    File.delete(o[:db_name]) if File.exist?(o[:db_name]) && o[:delete_db]
-    conn = ActiveRecord::Base.establish_connection(adapter:'sqlite3',database:o[:db_name])
-    FL_Application::DB_DDL.each {|sql| conn.connection.execute(sql) unless sql.strip.size == 0 }
-    conn.connection.execute('PRAGMA foreign_keys = on;')
+  def FL_Application.build_tables(db)
+    raise RuntimeError,'db class must be ActiveRecord::ConnectionAdapters::ConnectionPool' unless db.is_a?(ActiveRecord::ConnectionAdapters::ConnectionPool)
+    unless ActiveRecord::Base.connection.tables.include?(Application.table_name)
+      FL_Application::DB_DDL.each {|sql| db.connection.execute(sql) unless sql.strip.size == 0 }
+      db.connection.execute('PRAGMA foreign_keys = on;')
+    end
   end
 
 end
